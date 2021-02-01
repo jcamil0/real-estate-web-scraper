@@ -1,0 +1,60 @@
+{
+    "properties": [
+        {
+            "title": "Cali Brisas de los Alamos",
+            "price": "$ 250.000.000",
+            "mts": "150,00 m²",
+            "rooms": "4",
+            "baths": "3",
+            "parking": "Sin especificar",
+            "whatsapp": "3186996379",
+            "url": "https://www.fincaraiz.com.co/casa-en-venta/cali/brisas_los_alamos-det-4720051.aspx",
+            "interior": [
+                "Balcón",
+                "Piso en Baldosa /  Mármol"
+            ]
+        },
+        {
+            "title": "Cali La Flora",
+            "price": "$ 790.000.000",
+            "mts": "300,00 m²",
+            "rooms": "7",
+            "baths": "4",
+            "parking": "1",
+            "whatsapp": "sin whatsapp",
+            "url": "https://www.fincaraiz.com.co/casa-en-venta/cali/flora-det-5814032.aspx",
+            "interior": []
+        },
+        {
+            "title": "Cali Floralia",
+            "price": "$ 79.500.000",
+            "mts": "62,00 m²",
+            "rooms": "2",
+            "baths": "1",
+            "parking": "Sin especificar",
+            "whatsapp": "sin whatsapp",
+            "url": "https://www.fincaraiz.com.co/casa-en-venta/cali/floralia-det-6053402.aspx",
+            "interior": []
+        },
+        {
+            "title": "Cali Floralia",
+            "price": "$ 200.000.000",
+            "mts": "90,00 m²",
+            "rooms": "5",
+            "baths": "4",
+            "parking": "1",
+            "whatsapp": "sin whatsapp",
+            "url": "https://www.fincaraiz.com.co/casa-en-venta/cali/floralia-det-5897534.aspx",
+            "interior": [
+                "Balcón",
+                "Comedor auxiliar",
+                "Despensa",
+                "Hall de Alcobas",
+                "Instalación de gas",
+                "Patio",
+                "Piso en Baldosa /  Mármol",
+                "Zona de lavandería"
+            ]
+        }
+    ]
+}

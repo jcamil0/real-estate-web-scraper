@@ -1,99 +1,152 @@
-from bs4 import BeautifulSoup 
+from bs4 import BeautifulSoup
 import requests
-import json 
-import re
+import json
+import pandas as pd 
 
-zones=['norte','sur','oeste','oriente',]
-baseurl ='https://www.fincaraiz.com.co/casas/venta/{}/cali/'.format(zones[0])
-page =requests.get(baseurl)
-soup=BeautifulSoup(page.content, 'html.parser')
-
-
-urls=soup.find_all('div',class_='span-title')
-# print("numero de inmuebles", len(urls))
-
-urllist=[]
-comoseria =[]
+zone=['norte','sur','oeste','oriente',]
+data={}
+aux=[]
+urlLists =[]
 nuevo=[]
 
-for i in urls:
-    for x in i.find_all('a',href=True):
-        comoseria.append(x['href'])
-        
-# print(len(comoseria))
+baseurl ='https://www.fincaraiz.com.co/casas/venta/{}/cali/'.format(zone[0])
+page =requests.get(baseurl)
+soup=BeautifulSoup(page.content, 'html.parser')
+urls=soup.find_all('div',class_='span-title')
 
-aux=0
-for hola in comoseria:
+for _list in urls:
+    for x in _list.find_all('a',href=True):
+        urlLists.append(x['href'])
+# print(nuevo)
+
+for hola in urlLists:
     if hola.startswith("https") ==False:
         nuevo.append('https://www.fincaraiz.com.co{}'.format(hola))
-        aux+=1
-        
-# with open('data.json', 'w', encoding='utf-8') as f:
-#     json.dump(nuevo, f, ensure_ascii=False, indent=4)
 
-# print(aux)
 
-testurl='https://www.fincaraiz.com.co/casa-en-venta/cali/los_andes-det-5712022.aspx'
-r =requests.get(testurl)
+url=0
+for items in nuevo:
+    r =requests.get(items)
+    soup = BeautifulSoup(r.content,'html.parser')
+
+    title=soup.find('span', {'style':'font-weight:normal'}).text.strip()
+    prices=soup.find('div' , {'class':'price'}).text.strip()
+    mts=soup.find('span',{'class':'advertSurface'}).text.strip()
+    rooms=str(soup.find('span',{'class':'advertRooms'}).text).replace("Habitaciones:","")
+    baths=str(soup.find('span',{'class':'advertBaths'}).text).replace("Baños:","")
+    parking=str(soup.find('span',{'class':'advertGarages'}).text).replace("Parqueaderos:","")
+
+
+    interior=soup.find("ul", {"id":"tblInitialInteriores"})
+    _interior=[]
+
+    if interior:
+        newsoup = BeautifulSoup(str(interior), 'html.parser')
+        print(newsoup)
+        lis = newsoup.find_all('li')
+        for li in lis:
+            print(li.text)
+            _interior.append(li.text)
+            
+            print()
+            print(_interior) 
+    else: 
+        print("no encontrada")
+
+       
+
+    # for ul in interior:
+    #     newsoup = BeautifulSoup(str(ul), 'html.parser')
+    #     lis = newsoup.find_all('li')
+    #     for li in lis:
+    #         print(li.text)
+
+    # ext=soup.find("ul", {"id":"tblInitialInteriores"})
+    # for ul in ext:
+    #     newsoup = BeautifulSoup(str(ul), 'html.parser')
+    #     lis = newsoup.find_all('li')
+    #     for li in lis:
+    #         print(li.text)
+
+    # sector=soup.find("ul", {"id":"tblInitialdelSector"})
+    # for ul in sector:
+    #         newsoup = BeautifulSoup(str(ul), 'html.parser')
+    #         lis = newsoup.find_all('li')
+    #         for li in lis:
+    #             print(li.text)
+
+    try:
+        whatsapp =str(soup.find('div',{'class':'a_options whatsapplink'}).get('onclick')).split(",")
+        whatsapp[1]=whatsapp[1].replace("'","").replace(")","").replace(";","")
+    except:
+        whatsapp =["","sin whatsapp"]
+
+
+    aux.append({"title":title,
+    "price":prices,
+    "mts":mts,
+    "rooms":rooms.strip(),
+    "baths":baths.strip(),
+    "parking":parking.strip(),
+    "whatsapp":whatsapp[1],
+    "url":nuevo[url],
+    "interior":_interior,
+    # "Exterior":versiones_plone,
+    # "around":versiones
+    })
+
+    data["properties"]=aux
+    url+=1
+    if url == 4 :
+        break
+
+
+with open('data.json', 'w', encoding='utf-8') as f:
+    json.dump(data, f, ensure_ascii=False, indent=4)
+    
+for datos in data.values():
+    print(datos)
+
+test='https://www.fincaraiz.com.co/casa-en-venta/cali/prados_del_norte-det-5998080.aspx'
+r =requests.get(test)
 soup = BeautifulSoup(r.content,'html.parser')
-aja=soup.find('div' , class_='price')
-
-# body=[tag for tag in aja if 'h2'][1]
-# print(body)
-
-# ala=0
-# for datos in nuevo:
-#     r =requests.get(datos)
-#     soup = BeautifulSoup(r.content,'html.parser')
-#     peo=soup.find('div' , class_='price')
-#     ala+=1
-#     print(ala,"prices : {}".format((peo.text).strip()))
 
 
 
 
 
-# repr(string) imprimir los espacios 
-# tittle=soup.find('span', {'style':'font-weight:normal'})
-
-# print(tittle.text)
-
-# for divs in tittle:
-#     finddivs=divs.find('span')
-#     print(finddivs)
 
 
 
 
-# mts=soup.find('span',{'class':'advertSurface'})
-# rooms=soup.find('span',{'class':'advertRooms'})
-# baths=soup.find('span',{'class':'advertBaths'})
-# parking=soup.find('span',{'class':'advertGarages'})
+
+# diccionario = {
+#      "clave1":234,
+#      "clave2":True,
+#      "clave3":"Valor 1",
+#      "clave4":[1,2,3,4]
+#  }
+
+# d={
+
+#     "properties": [
+#         {
+#         "title": "Cali Brisas de los Alamos",
+#         "price": "$ 250.000.000",
+#         },{
+#         "title": "Cali Brisas sur de cali",
+#         "price": "$ 21231232150.000.000",
+#         }
+#     ]}
+
+# print(d.items())
+
+# print()
+# print()
+
+# print(d["properties"][0].setdefault("color ", 10))
 
 
-# mts=mts.text
-# rooms=rooms.text
-# baths=baths.text
-# parking=parking.text
 
-
-# xx=rooms.split(':')
-# xxx=baths.split(':')
-# xxxx=parking.split(':')
-
-
-# print(repr(xx[1].strip()))
-# print(repr(xxx[1].strip()))
-# print(repr(xxxx[1].strip()))
-
-whatsap=soup.find('div',{'class':'a_options whatsapplink'}).get('onclick')
-
-
-line =str(whatsap)
-# getwhats=line.replace("'","").replace(";","").replace(")","")
-
-haaaa=line.split(",")
-print(haaaa[1].replace("'","").replace(")","").replace(";",""))
-
-
-print(type(haaaa[1]))
+# https://serve8.recordbate.com/tasty_hot_latinas/tasty_hot_latinas_2020-11-28_02_39.mp4?md5=KqgFdK9h9vY4ypYiJdWYow&expires=1612131348
+# https://serve11.recordbate.com/tasty_hot_latinas/tasty_hot_latinas_2020-12-18_02_52.mp4?md5=QaG_5X4JSqIBftSsIdjyXQ&expires=1612131344
