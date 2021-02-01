@@ -39,48 +39,40 @@ for items in nuevo:
 
     interior=soup.find("ul", {"id":"tblInitialInteriores"})
     _interior=[]
-
     if interior:
         newsoup = BeautifulSoup(str(interior), 'html.parser')
-        print(newsoup)
         lis = newsoup.find_all('li')
         for li in lis:
-            print(li.text)
-            _interior.append(li.text)
-            
-            print()
-            print(_interior) 
+            _interior.append(li.text)            
     else: 
         print("no encontrada")
 
        
 
-    # for ul in interior:
-    #     newsoup = BeautifulSoup(str(ul), 'html.parser')
-    #     lis = newsoup.find_all('li')
-    #     for li in lis:
-    #         print(li.text)
+    ext=soup.find("ul", {"id":"tblInitialExteriores"})
+    _ext=[]
+    if ext:
+        newsoup = BeautifulSoup(str(ext), 'html.parser')
+        lis = newsoup.find_all('li')
+        for li in lis:
+            _ext.append(li.text)
+    else:
+        print("no encontrado")
 
-    # ext=soup.find("ul", {"id":"tblInitialInteriores"})
-    # for ul in ext:
-    #     newsoup = BeautifulSoup(str(ul), 'html.parser')
-    #     lis = newsoup.find_all('li')
-    #     for li in lis:
-    #         print(li.text)
-
-    # sector=soup.find("ul", {"id":"tblInitialdelSector"})
-    # for ul in sector:
-    #         newsoup = BeautifulSoup(str(ul), 'html.parser')
-    #         lis = newsoup.find_all('li')
-    #         for li in lis:
-    #             print(li.text)
-
+    sector=soup.find("ul", {"id":"tblInitialdelSector"})
+    _sector=[]
+    if sector:
+            newsoup = BeautifulSoup(str(sector), 'html.parser')
+            lis = newsoup.find_all('li')
+            for li in lis:
+                _sector.append(li.text)
+    else:
+        print("no encontrado")
     try:
         whatsapp =str(soup.find('div',{'class':'a_options whatsapplink'}).get('onclick')).split(",")
         whatsapp[1]=whatsapp[1].replace("'","").replace(")","").replace(";","")
     except:
         whatsapp =["","sin whatsapp"]
-
 
     aux.append({"title":title,
     "price":prices,
@@ -91,62 +83,15 @@ for items in nuevo:
     "whatsapp":whatsapp[1],
     "url":nuevo[url],
     "interior":_interior,
-    # "Exterior":versiones_plone,
-    # "around":versiones
+    "Exterior":_ext,
+    "around":_sector
     })
 
     data["properties"]=aux
-    url+=1
-    if url == 4 :
-        break
+    data["total"]=len(aux)
+
 
 
 with open('data.json', 'w', encoding='utf-8') as f:
     json.dump(data, f, ensure_ascii=False, indent=4)
     
-for datos in data.values():
-    print(datos)
-
-test='https://www.fincaraiz.com.co/casa-en-venta/cali/prados_del_norte-det-5998080.aspx'
-r =requests.get(test)
-soup = BeautifulSoup(r.content,'html.parser')
-
-
-
-
-
-
-
-
-
-
-# diccionario = {
-#      "clave1":234,
-#      "clave2":True,
-#      "clave3":"Valor 1",
-#      "clave4":[1,2,3,4]
-#  }
-
-# d={
-
-#     "properties": [
-#         {
-#         "title": "Cali Brisas de los Alamos",
-#         "price": "$ 250.000.000",
-#         },{
-#         "title": "Cali Brisas sur de cali",
-#         "price": "$ 21231232150.000.000",
-#         }
-#     ]}
-
-# print(d.items())
-
-# print()
-# print()
-
-# print(d["properties"][0].setdefault("color ", 10))
-
-
-
-# https://serve8.recordbate.com/tasty_hot_latinas/tasty_hot_latinas_2020-11-28_02_39.mp4?md5=KqgFdK9h9vY4ypYiJdWYow&expires=1612131348
-# https://serve11.recordbate.com/tasty_hot_latinas/tasty_hot_latinas_2020-12-18_02_52.mp4?md5=QaG_5X4JSqIBftSsIdjyXQ&expires=1612131344
