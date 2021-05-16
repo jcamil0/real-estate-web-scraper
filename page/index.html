@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="" href="#" />
+    <title>DATOS</title>
+    <script
+      type="text/javascript"
+      src="http://ajax.googleapis.com/ajax/libs/jquery/1.6.2/jquery.min.js"
+    ></script>
+    <script>
+      $(function () {
+        var people = [];
+        $.getJSON("../data.json", function (data) {
+          $.each(data.properties, function (i, f) {
+            var tblRow =
+              "<tr>" +
+              "<td>" +
+              f.title +
+              "</td>" +
+              "<td>" +
+              f.price +
+              "</td>" +
+              "<td>" +
+              f.mts +
+              "</td>" +
+              "<td>" +
+              f.rooms +
+              "</td>" +
+              "<td>" +
+              f.baths +
+              "</td>" +
+              "<td>" +
+              f.parking +
+              "</td>" +
+              "<td>" +
+              f.url +
+              "</td>" +
+              "</tr>";
+            $(tblRow).appendTo("#userdata tbody");
+          });
+        });
+      });
+    </script>
+  </head>
+
+  <body>
+    <div class="wrapper">
+      <div class="profile">
+        <table id="userdata" border="2">
+          <thead>
+            <th>title</th>
+            <th>price</th>
+            <th>mts</th>
+            <th>rooms</th>
+            <th>baths</th>
+            <th>parking</th>
+            <th>url</th>
+          </thead>
+          <tbody>
+            <h1></h1>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </body>
+</html>

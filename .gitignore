@@ -2,3 +2,7 @@ temp.txt
 key.py
 # data.json
 .vscode/settings.json
+
+data/*
+
+__pycache__
