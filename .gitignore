@@ -4,5 +4,6 @@ key.py
 .vscode/settings.json
 
 data/*
-
+urls/*
 __pycache__
+shell.sh
