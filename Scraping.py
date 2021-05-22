@@ -22,7 +22,7 @@ def getAllUrl(zone, urlid, pagination):
                         zone[i].append(
                             'https://www.fincaraiz.com.co{}'.format(x['href']))
 
-        with open('./url/urls.json', 'w', encoding='utf-8') as f:
+        with open('./data/urls.json', 'w', encoding='utf-8') as f:
             json.dump(zone, f, ensure_ascii=False, indent=4)
         print("file urls.json created")
         print("page {} ready !!".format(j+1))
@@ -30,6 +30,7 @@ def getAllUrl(zone, urlid, pagination):
 
 def scrapy_data(data):
     for items in zone.keys():
+        data = []
         home = 1
         for x in zone[items]:
             r = requests.get(x)
@@ -39,6 +40,7 @@ def scrapy_data(data):
             mts = soup.find('span', {'class': 'advertSurface'}).text.strip()
             rooms = str(soup.find('span', {'class': 'advertRooms'}).text).replace(
                 "Habitaciones:", "")
+
             baths = str(soup.find('span', {'class': 'advertBaths'}).text).replace(
                 "Baños:", "")
             parking = str(soup.find('span', {'class': 'advertGarages'}).text).replace(
@@ -68,21 +70,31 @@ def scrapy_data(data):
                 for li in lis:
                     _sector.append(li.text)
 
-            data.update({
-                "home {}".format(home): {
+            # estrato = soup.find("ul", {"class": "boxcube"})
+            # _estrato = []
+
+            # if estrato:
+            #     newsoup = BeautifulSoup(str(estrato), 'html.parser')
+            #     lis = newsoup.find_all('li')
+            #     for li in lis:
+            #         print(li)
+
+            data.append(
+                {
                     "title": title.text,
                     "price": prices.text.strip(),
                     "mts": mts,
                     "rooms": rooms.strip(),
                     "baths": baths.strip(),
                     "parking": parking.strip(),
-                    "interior": interiors,
-                    "Exterior": _ext,
-                    "around": _sector,
+                    # "interior": interiors,
+                    # "Exterior": _ext,
+                    # "around": _sector,
                     "url": x,
-                }})
+                    # "xxx": _estrato
+                })
             home += 1
-        data["total"] = len(data)
+        # data["total"] = len(data)
         WriteData(data, items)
 
 
@@ -96,7 +108,7 @@ if __name__ == "__main__":
     print("recolectando datos....")
     zone = {'norte': [], 'oeste': [], 'centro': [], 'sur': [], "oriente": []}
     urlid = ["8200101", "8200102", "8200103", "8200104", "8200105"]
-    data = {}
+    data = []
     pagination = 1
 
     if len(sys.argv) == 1:
@@ -107,9 +119,9 @@ if __name__ == "__main__":
 
     scrapy_data(data)
 
-    print("bye....")
-    drive = webdriver.Chrome(
-        "/home/camilo/Documentos/bigdata/proyecto/page/chromedriver")
-    drive.get("http://0.0.0.0:8000/page/")
+    # drive = webdriver.Chrome(
+    #     "/home/camilo/Documentos/bigdata/proyecto/page/chromedriver")
+    # drive.get("http://0.0.0.0:8000/page/")
 
+    print("bye....")
     # python -m SimpleHTTPServer 8000

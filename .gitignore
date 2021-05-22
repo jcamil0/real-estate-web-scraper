@@ -7,3 +7,7 @@ data/*
 urls/*
 __pycache__
 shell.sh
+env
+test.py
+
+templates/assets/*
