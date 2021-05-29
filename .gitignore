@@ -12,4 +12,4 @@ test.py
 
 templates/assets/*
 
-recat/
+static/*

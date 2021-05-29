@@ -69,35 +69,35 @@ def join_dfs():
 
     fig = plt.gcf()
     fig.set_size_inches((8.5, 11), forward=False)
-    fig.savefig('./templates/assets/norte.png', dpi=500)
+    fig.savefig('./static/norte.png', dpi=500)
 
     oriente_df.groupby(['title', 'price']).size(
     ).unstack().plot(kind='bar', stacked=True)
 
     fig = plt.gcf()
     fig.set_size_inches((8.5, 11), forward=False)
-    fig.savefig('./templates/assets/oriente.png', dpi=500)
+    fig.savefig('./static/oriente.png', dpi=500)
 
     centro_df.groupby(['title', 'price']).size(
     ).unstack().plot(kind='bar', stacked=True)
 
     fig = plt.gcf()
     fig.set_size_inches((8.5, 11), forward=False)
-    fig.savefig('./templates/assets/centro_df.png', dpi=500)
+    fig.savefig('./static/centro.png', dpi=500)
 
     oeste_df.groupby(['title', 'price']).size(
     ).unstack().plot(kind='bar', stacked=True)
 
     fig = plt.gcf()
     fig.set_size_inches((8.5, 11), forward=False)
-    fig.savefig('./templates/assets/oeste.png', dpi=500)
+    fig.savefig('./static/oeste.png', dpi=500)
 
     sur_df.groupby(['title', 'price']).size(
     ).unstack().plot(kind='bar', stacked=True)
 
     fig = plt.gcf()
     fig.set_size_inches((8.5, 11), forward=False)
-    fig.savefig('./templates/assets/sur.png', dpi=500)
+    fig.savefig('./static/sur.png', dpi=500)
 
     house_df = pd.concat(frames, ignore_index=True)
     return house_df
@@ -148,3 +148,6 @@ def plotdata():
 
     list_of_figures = [plt.figure(i) for i in plt.get_fignums()]
     return list_of_figures
+
+
+join_dfs()
